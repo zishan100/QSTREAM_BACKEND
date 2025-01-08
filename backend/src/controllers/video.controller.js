@@ -62,7 +62,7 @@ const videoWebHooks = catchAsync(async (req, res) => {
   const io = getIo();
 
   if (!video) {
-    // console.log("Called webSocket to client on failiure of video streaming ");
+    console.log("Called webSocket to client on failiure of video streaming ");
   } else {
     // console.log("Videos :", video);
     console.log("Called webSocket to client on success of video streaming ");
