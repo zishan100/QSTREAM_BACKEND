@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const httpServer = require("./app");
 const config = require("./config/config");
 const service = require("./services/consumer.service");
-let server;
 
 service.init();
 
