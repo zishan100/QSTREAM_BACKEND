@@ -53,9 +53,7 @@ const patchViews = catchAsync(async (req, res) => {
 const videoWebHooks = catchAsync(async (req, res) => {
   const { id } = req.params;
 
-  // console.log("PARAMS ID :", id, "  req.body :", req.body);
-
-  const video = await videoService.webHooks(id, req.body);
+  let video = await videoService.webHooks(id, req.body);
 
   /* webSocket response to client on success & failure of webHooks call  */
 
@@ -64,9 +62,8 @@ const videoWebHooks = catchAsync(async (req, res) => {
   if (!video) {
     console.log("Called webSocket to client on failiure of video streaming ");
   } else {
-    // console.log("Videos :", video);
     console.log("Called webSocket to client on success of video streaming ");
-    io.emit("serverToClient", video);
+    io.emit("serverToClient");
   }
 
   res.status(httpStatus.NO_CONTENT).send();
