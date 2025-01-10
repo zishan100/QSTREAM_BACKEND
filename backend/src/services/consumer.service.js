@@ -19,6 +19,7 @@ const {
   SUBNET_GROUP,
   SECURITY_GROUP,
   CONTAINER_NAME,
+  NODE_ENVIRONMENT,
 } = process.env;
 
 const sqsClient = new SQSClient({
@@ -51,7 +52,9 @@ async function init() {
       const { Messages } = await sqsClient.send(command);
 
       if (!Messages) {
-        console.log("No msg in queue");
+        if (NODE_ENVIRONMENT === "development") {
+          console.log("No msg in queue");
+        }
         continue;
       }
 
