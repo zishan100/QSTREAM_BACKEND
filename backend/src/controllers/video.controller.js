@@ -2,7 +2,6 @@ const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const { videoService } = require("../services/index");
 const { getIo } = require("../services/socketInstance.service");
-const { get } = require("mongoose");
 
 const videoPost = catchAsync(async (req, res) => {
   const video = await videoService.videoPost(req.body);
@@ -21,7 +20,7 @@ const getVideoById = catchAsync(async (req, res) => {
 const getVideo = catchAsync(async (req, res) => {
   const { title, contentRating, genres, sortBy } = req.query;
 
-  // console.log(title," ",contentRating,"  ",genres," ",sortBy);
+  // console.log(title, " ", contentRating, "  ", genres, " ", sortBy);
   const filter = { title, contentRating, genres, sortBy };
 
   // console.log(filter);

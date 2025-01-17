@@ -30,10 +30,9 @@ const objectId = (values, helpers) => {
 };
 
 const checkContentRating = (values, helpers) => {
-  console.log(values);
-  const ratingArr = ["Anyone", "7+", "12+", "16+", "18+"];
+  const ratingArr = ["Anyone", "7", "12", "16", "18"];
 
-  if (!ratingArr.includes(values)) {
+  if (!ratingArr.includes(values.trim())) {
     return helpers.message(
       ' "{{#include}}" must be one of [Anyone, 7+, 12+, 16+, 18+, All] '
     );
