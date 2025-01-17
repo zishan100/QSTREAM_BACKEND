@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 let io;
 
 module.exports = {
@@ -5,7 +7,10 @@ module.exports = {
     const { Server } = require("socket.io");
     io = new Server(server, {
       cors: {
-        origin: "http://localhost:3000",
+        origin:
+          process.env.NODE_ENVIRONMENT === "development"
+            ? "http://localhost:3000"
+            : "https://qstream-frontend.vercel.app/",
       },
     });
 

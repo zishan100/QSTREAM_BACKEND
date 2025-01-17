@@ -60,7 +60,7 @@ async function init() {
 
       for (const message of Messages) {
         const { Body, MessageId, ReceiptHandle } = message;
-        console.log(message);
+
         if (!Body) continue;
 
         const events = JSON.parse(Body);
@@ -70,11 +70,13 @@ async function init() {
         }
 
         for (const record of events.Records) {
-          // console.log("Event record :", record);
           const {
             s3: { bucket, object },
           } = record;
-          console.log(bucket, "  ", object);
+
+          if (NODE_ENVIRONMENT === "development") {
+            console.log(bucket, "  ", object);
+          }
 
           /* Spin the docker when sqs msg received */
           const runTaskCommand = new RunTaskCommand({
