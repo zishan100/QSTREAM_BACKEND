@@ -10,7 +10,7 @@ module.exports = {
         origin:
           process.env.NODE_ENVIRONMENT === "development"
             ? "http://localhost:3000"
-            : "https://qstream-frontend.vercel.app/",
+            : "https://qstream-frontend.vercel.app",
       },
     });
 
