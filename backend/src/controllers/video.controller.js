@@ -1,10 +1,9 @@
 const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
 const { videoService } = require("../services/index");
-const { getIo } = require("../services/socketInstance.service");
 
 const videoPost = catchAsync(async (req, res) => {
-  const video = await videoService.videoPost(req.body);
+  const video = await videoService.videoPost(req);
 
   res.status(httpStatus.CREATED).json(video);
 });
@@ -49,24 +48,42 @@ const patchViews = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
-const videoWebHooks = catchAsync(async (req, res) => {
+/*    
+  ## Get videos list by userId. 
+*/
+const getVideoListByUserId = catchAsync(async (req, res) => {
   const { id } = req.params;
 
-  let video = await videoService.webHooks(id, req.body);
+  const video = await videoService.getVideoListByUserId(id);
 
-  /* webSocket response to client on success & failure of webHooks call  */
+  res.status(httpStatus.OK).send(video);
+})
 
-  const io = getIo();
+/*    
+  ## Get only video by userId which is in uploading state.
+*/
 
-  if (!video) {
-    console.log("Called webSocket to client on failiure of video streaming ");
-  } else {
-    console.log("Called webSocket to client on success of video streaming ");
-    io.emit("serverToClient");
-  }
+const getVideoByUploadState = catchAsync(async (req, res) => {
+  const { id, videoId } = req.params;
 
-  res.status(httpStatus.NO_CONTENT).send();
-});
+  const video = await videoService.getVideoByUploadState(id, videoId);
+
+  res.status(httpStatus.OK).send(video);
+})
+
+/*    
+  ## Video update By videoId params
+*/
+
+const videoUpdateByParams = catchAsync(async (req, res) => {
+  const { params: { id }, body } = req;
+
+  const video = await videoService.videoUpdateByParams(id, body);
+
+  res.status(httpStatus.CREATED).send(video);
+})
+
+
 
 module.exports = {
   videoPost,
@@ -74,5 +91,7 @@ module.exports = {
   getVideo,
   patchVotes,
   patchViews,
-  videoWebHooks,
+  getVideoListByUserId,
+  getVideoByUploadState,
+  videoUpdateByParams
 };

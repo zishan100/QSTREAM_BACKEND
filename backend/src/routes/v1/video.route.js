@@ -33,6 +33,12 @@ router.patch(
   videoController.patchViews
 );
 
-router.patch("/:id/video_webhooks", videoController.videoWebHooks);
+router.get('/:id/video_list', auth, validate(videoValidation.getVideoById), videoController.getVideoListByUserId);
+
+router.put('/:id/video_update', auth, validate(videoValidation.videoUpdate), videoController.videoUpdateByParams);
+
+router.get('/:id/:videoId', auth, validate(videoValidation.getVideoByUploadState), videoController.getVideoByUploadState);
+
+
 
 module.exports = router;

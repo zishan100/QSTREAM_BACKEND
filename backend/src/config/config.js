@@ -1,8 +1,7 @@
 const dotenv = require("dotenv");
 const path = require("path");
 const Joi = require("joi");
-
-dotenv.config({ path: path.join(__dirname, "../../.env") });
+dotenv.config({ path: path.join(__dirname, "../../../.env") });
 
 const envVarsSchema = Joi.object()
   .keys({
@@ -27,8 +26,7 @@ module.exports = {
   // Set mongoose configuration
   mongoose: {
     url:
-      envVars.MONGODB_URL +
-      (envVars.NODE_ENVIRONMENT === "test" ? "-test" : ""),
+      envVars.MONGODB_URL,
     options: {
       // useCreateIndex: true,
       // useNewUrlParser: true,

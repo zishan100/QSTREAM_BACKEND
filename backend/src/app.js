@@ -6,11 +6,8 @@ const ApiError = require("./utils/ApiError");
 const helmet = require("helmet");
 const { errorHandler } = require("./middlewares/error");
 const http = require("http");
-const { Server } = require("socket.io");
 const app = express();
 const httpServer = http.createServer(app);
-
-const io = require("./services/socketInstance.service").init(httpServer);
 
 // set security HTTP headers - https://helmetjs.github.io/
 app.use(helmet());
@@ -25,6 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.options("*", cors());
 
+// Testing routes for Target Group
+app.get('/health', (req, res) => {
+  res.status(200).send('OK')
+})
+
 // Reroute all API request starting with "/v1" route
 app.use("/v1", routes);
 
@@ -35,6 +37,5 @@ app.use((req, res, next) => {
 
 app.use(errorHandler);
 
-require("./services/socket.service")(io);
 
 module.exports = httpServer;

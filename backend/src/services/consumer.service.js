@@ -20,6 +20,7 @@ const {
   SECURITY_GROUP,
   CONTAINER_NAME,
   NODE_ENVIRONMENT,
+  FIREBASE_SERVICE_ACCOUNT
 } = process.env;
 
 const sqsClient = new SQSClient({
@@ -101,6 +102,7 @@ async function init() {
                     { name: "ACCESS_KEY_ID", value: ACCESS_KEY_ID },
                     { name: "SECRET_ACCESS_KEY", value: SECRET_ACCESS_KEY },
                     { name: "REGION", value: REGION },
+                    { name: 'FIREBASE_SERVICE_ACCOUNT', value: FIREBASE_SERVICE_ACCOUNT }
                   ],
                 },
               ],

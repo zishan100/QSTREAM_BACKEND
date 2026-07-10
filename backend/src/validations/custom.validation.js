@@ -1,21 +1,11 @@
 const regexPattern = /^[0-9a-fA-F]{24}$/;
 
 const videoLink = (values, helpers) => {
-  let arr = values.split("/").filter((items) => items !== "");
 
-  if (arr[0] === "https:") {
-    if (
-      arr.length !== 4 ||
-      !(arr[1] === "www.youtube.com" && arr[2] === "embed")
-    ) {
-      return helpers.message("Invalid video link");
-    }
-  }
+  const regexUrl = /^https:\/\/[a-zA-Z0-9.-]+\/[a-zA-Z0-9_-]+\/[a-fA-F0-9]{24}\/(index\.m3u8|thumbnail\.jpg)$/;
 
-  if (arr[0] === "youtube.com") {
-    if (arr.length !== 3 || !(arr[0] === "youtube.com" && arr[1] === "embed")) {
-      return helpers.message("Invalid video link");
-    }
+  if (!values.match(regexUrl)) {
+    return helpers.message('"#{{label}}" is not valid link')
   }
 
   return values;

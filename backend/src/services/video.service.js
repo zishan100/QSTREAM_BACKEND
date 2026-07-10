@@ -26,12 +26,14 @@ const sortByReleaseDate = (a, b) => {
   return 1;
 };
 
-const videoPost = async (body) => {
+const videoPost = async (req) => {
+  const { user: { id }, body } = req;
   let { title, genre, contentRating, releaseDate } = body;
 
   if (title && genre && contentRating && releaseDate) {
     const createVideo = new Video({
       ...body,
+      userId: id
     });
 
     return await createVideo.save();
@@ -85,6 +87,8 @@ const getVideoByFilter = async (filter) => {
 
   let video;
 
+  filterObj.videoUploading = { $ne: true };
+
   video = await Video.find(filterObj);
 
   if (filter.sortBy === "viewCount") {
@@ -136,18 +140,50 @@ const patchViews = async (id) => {
   return await video.save();
 };
 
-const webHooks = async (id, body) => {
-  if (!Types.ObjectId.isValid(id)) return null;
+const getVideoListByUserId = async (id) => {
 
-  const video = await Video.findById(id);
+  if (!Types.ObjectId.isValid(id)) {
+    throw new ApiError(httpStatus.NOT_FOUND, "No video found with matching id");
+  };
 
-  if (!video) return null;
+  const video = await Video.find({ userId: id }, { __v: 0 }).sort({ createdAt: -1 });
 
-  video.videoLink = body.indexUrl;
-  video.previewImage = body.previewImage;
+  return { videos: video }
 
-  return await video.save();
-};
+}
+
+const getVideoByUploadState = async (id, videoId) => {
+
+  if (!Types.ObjectId.isValid(id) || !Types.ObjectId.isValid(videoId)) {
+    throw new ApiError(httpStatus.NOT_FOUND, "No video found with matching id");
+  };
+
+  const video = await Video.findOne({ _id: videoId, videoUploading: { $ne: false } }).populate('userId', '_id');
+
+  if (!video) {
+    return {};
+  }
+
+  const { userId: { _id } } = video
+
+  if (_id.toString() !== id.toString()) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Opps userId is not matching.");
+  }
+
+  return video
+
+}
+
+const videoUpdateByParams = async (videoId, body) => {
+
+  if (!Types.ObjectId.isValid(videoId)) {
+    throw new ApiError(httpStatus.NOT_FOUND, "No video found with matching id");
+  };
+
+  const video = await Video.updateOne({ _id: videoId }, { $set: { videoUploading: false, ...body } });
+
+  return video;
+}
 
 module.exports = {
   videoPost,
@@ -155,5 +191,7 @@ module.exports = {
   getVideoByFilter,
   patchVotes,
   patchViews,
-  webHooks,
+  getVideoListByUserId,
+  getVideoByUploadState,
+  videoUpdateByParams
 };
