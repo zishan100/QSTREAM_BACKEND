@@ -13,6 +13,7 @@ const videoPost = {
     genre: Joi.string().required(),
     contentRating: Joi.string().required(),
     releaseDate: Joi.string().required(),
+    videoUploading: Joi.boolean()
   }),
 };
 
@@ -47,14 +48,22 @@ const patchViews = {
   }),
 };
 
-const webHooks = {
-  body: Joi.object().keys({
-    indexUrl: Joi.string().required(),
-  }),
+const getVideoByUploadState = {
   params: Joi.object().keys({
     id: Joi.string().custom(objectId).required(),
+    videoId: Joi.string().custom(objectId).required(),
   }),
 };
+
+const videoUpdateByParams = {
+  params: Joi.object().keys({
+    id: Joi.string().custom(objectId).required()
+  }),
+  body: Joi.object().keys({
+    videoLink: Joi.string().custom(videoLink).required(),
+    previewImage: Joi.string().custom(videoLink).required()
+  })
+}
 
 module.exports = {
   videoPost,
@@ -62,5 +71,6 @@ module.exports = {
   getVideo,
   patchVotes,
   patchViews,
-  webHooks,
+  getVideoByUploadState,
+  videoUpdateByParams
 };

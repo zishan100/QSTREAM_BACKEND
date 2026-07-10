@@ -44,9 +44,17 @@ const videoSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    videoUploading: {
+      type: Boolean,
+      default: false,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users'
+    }
   },
   {
-    timestamps: false,
+    timestamps: true,
   }
 );
 
