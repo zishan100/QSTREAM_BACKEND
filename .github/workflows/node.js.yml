@@ -34,8 +34,6 @@ jobs:
 
             git pull origin main
 
-            cd ${{secrets.DOCKER_COMPOSE_PATH}}
-
             sudo docker compose \
             -f /home/ubuntu/QSTREAM_BACKEND/backend/docker-compose.yml \
             up -d --build
