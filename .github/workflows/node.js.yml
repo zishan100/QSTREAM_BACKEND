@@ -33,6 +33,10 @@ jobs:
             cd ${{ secrets.APP_PATH }}
 
             git pull origin main
+            
+            sudo docker compose \
+            -f /home/ubuntu/QSTREAM_BACKEND/backend/docker-compose.yml \
+            down
 
             sudo docker compose \
             -f /home/ubuntu/QSTREAM_BACKEND/backend/docker-compose.yml \
