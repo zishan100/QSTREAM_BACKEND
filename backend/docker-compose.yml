@@ -41,4 +41,5 @@ services:
       - qstream-network
 
 networks:
-  - qstream-network    
+  qstream-network:
+    driver: bridge    
