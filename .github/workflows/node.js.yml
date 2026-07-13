@@ -36,6 +36,6 @@ jobs:
 
             cd ${{secrets.DOCKER_COMPOSE_PATH}}
 
-            docker compose \
+            sudo docker compose \
             -f /home/ubuntu/QSTREAM_BACKEND/backend/docker-compose.yml \
             up -d --build
