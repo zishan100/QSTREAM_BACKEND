@@ -8,7 +8,7 @@ WORKDIR /backend
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy remaining project files
 COPY . .
