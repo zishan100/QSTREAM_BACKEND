@@ -22,11 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.options("*", cors());
 
-// Testing routes for Target Group
-app.get('/health', (req, res) => {
-  res.status(200).send('OK')
-})
-
 // Reroute all API request starting with "/v1" route
 app.use("/v1", routes);
 
